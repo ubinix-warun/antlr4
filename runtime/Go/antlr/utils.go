@@ -86,7 +86,7 @@ func wordForBit(data []uint64, bit int) uint64 {
 }
 
 func maskForBit(bit int) uint64 {
-	return uint64(1) << (bit % bitsPerWord)
+	return uint64(1) << uint(bit % bitsPerWord)
 }
 
 func wordsNeeded(bit int) int {
@@ -212,7 +212,7 @@ func (b *BitSet) String() string {
 		for v != 0 {
 			n := bits.TrailingZeros64(v)
 			vals = append(vals, strconv.Itoa(i*bitsPerWord+n))
-			v &= ^(uint64(1) << n)
+			v &= ^(uint64(1) << uint(n))
 		}
 	}
 
