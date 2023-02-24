@@ -4,17 +4,30 @@
 [![License](https://img.shields.io/badge/license-BSD-blue.svg)](https://raw.githubusercontent.com/antlr/antlr4/master/LICENSE.txt)
 
 
+## Versioning
+
+ANTLR 4 supports 10 target languages, and ensuring consistency across these targets is a unique and highly valuable feature.
+To ensure proper support of this feature, each release of ANTLR is a complete release of the tool and the 10 runtimes, all with the same version.
+As such, ANTLR versioning does not strictly follow semver semantics:
+
+* a component may be released with the latest version number even though nothing has changed within that component since the previous release
+* major version is bumped only when ANTLR is rewritten for a totally new "generation", such as ANTLR3 -> ANTLR4 (LL(\*) -> ALL(\*) parsing)
+* minor version updates may include minor breaking changes, the policy is to regenerate parsers with every release (4.11 -> 4.12)
+* backwards compatibility is only guaranteed for patch version bumps (4.11.1 -> 4.11.2)
+
+If you use a semver verifier in your CI, you probably want to apply special rules for ANTLR, such as treating minor change as a major change.
+
 **ANTLR** (ANother Tool for Language Recognition) is a powerful parser generator for reading, processing, executing, or translating structured text or binary files. It's widely used to build languages, tools, and frameworks. From a grammar, ANTLR generates a parser that can build parse trees and also generates a listener interface (or visitor) that makes it easy to respond to the recognition of phrases of interest.
 
 **Dev branch build status**
 
-* [![MacOSX](https://github.com/antlr/antlr4/actions/workflows/macosx.yml/badge.svg)](https://github.com/antlr/antlr4/actions/workflows/macosx.yml) (github actions)
+[![MacOSX, Windows, Linux](https://github.com/antlr/antlr4/actions/workflows/hosted.yml/badge.svg)](https://github.com/antlr/antlr4/actions/workflows/hosted.yml) (github actions)
 
+<!--
 * [![Windows](https://github.com/antlr/antlr4/actions/workflows/windows.yml/badge.svg?branch=dev)](https://github.com/antlr/antlr4/actions/workflows/windows.yml) (github actions)
 
 * [![Circle CI Build Status (Linux)](https://img.shields.io/circleci/build/gh/antlr/antlr4/master?label=Linux)](https://app.circleci.com/pipelines/github/antlr/antlr4) (CircleCI)
 
-<!--
 [![AppVeyor CI Build Status (Windows)](https://img.shields.io/appveyor/build/parrt/antlr4?label=Windows)](https://ci.appveyor.com/project/parrt/antlr4) 
 [![Travis-CI Build Status (Swift-Linux)](https://img.shields.io/travis/antlr/antlr4.svg?label=Linux-Swift&branch=master)](https://travis-ci.com/github/antlr/antlr4)
 -->
@@ -49,6 +62,8 @@ ANTLR project lead and supreme dictator for life
 * [Lingyu Li](https://github.com/lingyv-li) (Dart target)
 * [Ivan Kochurkin](https://github.com/KvanTTT) has made major contributions to overall quality, error handling, and Target performance.
 * [Justin King](https://github.com/jcking) has done a huge amount of work across multiple targets, but especially for C++.
+* [Ken Domino](https://github.com/kaby76) has a knack for finding bugs/issues and analysis; also a major contributor on the [grammars-v4 repo](https://github.com/antlr/grammars-v4).
+* [Jim Idle](https://github.com/jimidle) has contributed to previous versions of ANTLR and recently jumped back in to solve a major problem with the Go target.
 
 
 ## Useful information

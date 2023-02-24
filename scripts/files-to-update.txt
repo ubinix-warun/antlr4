@@ -7,6 +7,9 @@
 
 docker/Dockerfile
 runtime/Go/antlr/recognizer.go
+runtime/Go/antlr/v4/recognizer.go
+runtime/Go/antlr/v4/antlrdoc.go
+runtime/Go/antlr/antlrdoc.go
 runtime/Python3/setup.py
 runtime/Python3/src/antlr4/Recognizer.py
 runtime/Python2/setup.py
@@ -14,12 +17,14 @@ runtime/Python2/src/antlr4/Recognizer.py
 runtime/Dart/pubspec.yaml
 runtime/Dart/lib/src/runtime_meta_data.dart
 runtime/Java/src/org/antlr/v4/runtime/RuntimeMetaData.java
+runtime/Cpp/CPackConfig.cmake
 runtime/Cpp/demo/generate.cmd
 runtime/Cpp/cmake/Antlr4Package.md
 runtime/Cpp/cmake/README.md
 runtime/Cpp/cmake/ExternalAntlr4Cpp.cmake
 runtime/Cpp/cmake/FindANTLR.cmake
 runtime/Cpp/runtime/src/Version.h
+runtime/Cpp/runtime/cmake_install.cmake
 runtime/Cpp/VERSION
 runtime/Swift/Sources/Antlr4/RuntimeMetaData.swift
 runtime/CSharp/src/README.md
@@ -28,16 +33,16 @@ runtime/CSharp/src/Antlr4.csproj
 runtime/JavaScript/package-lock.json
 runtime/JavaScript/package.json
 runtime/JavaScript/src/antlr4/Recognizer.js
+runtime-testsuite/resources/org/antlr/v4/test/runtime/helpers/package_ts.json
 
 # Allow doc files to have multiple values updated
 * doc/swift-target.md
-* doc/dart-target.md
-doc/releasing-antlr.md  # Do this one manually; it'll fail because of multiple lines but we get warning
+# doc/releasing-antlr.md
 * doc/getting-started.md
 * doc/swift-target.md
 * doc/getting-started.md
 
-#runtime/Swift/Tests/Antlr4Tests/RuntimeMetaDataTests.swift  This is special so must manually edit
+# runtime/Swift/Tests/Antlr4Tests/RuntimeMetaDataTests.swift  This is special so must manually edit
 
 # Just documenting that these are generated...
 

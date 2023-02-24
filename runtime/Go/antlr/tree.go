@@ -1,4 +1,4 @@
-// Copyright (c) 2012-2017 The ANTLR Project. All rights reserved.
+// Copyright (c) 2012-2022 The ANTLR Project. All rights reserved.
 // Use of this file is governed by the BSD 3-clause license that
 // can be found in the LICENSE.txt file in the project root.
 
@@ -234,10 +234,8 @@ func (p *ParseTreeWalker) Walk(listener ParseTreeListener, t Tree) {
 	}
 }
 
-//
 // Enters a grammar rule by first triggering the generic event {@link ParseTreeListener//EnterEveryRule}
 // then by triggering the event specific to the given parse tree node
-//
 func (p *ParseTreeWalker) EnterRule(listener ParseTreeListener, r RuleNode) {
 	ctx := r.GetRuleContext().(ParserRuleContext)
 	listener.EnterEveryRule(ctx)
@@ -246,7 +244,6 @@ func (p *ParseTreeWalker) EnterRule(listener ParseTreeListener, r RuleNode) {
 
 // Exits a grammar rule by first triggering the event specific to the given parse tree node
 // then by triggering the generic event {@link ParseTreeListener//ExitEveryRule}
-//
 func (p *ParseTreeWalker) ExitRule(listener ParseTreeListener, r RuleNode) {
 	ctx := r.GetRuleContext().(ParserRuleContext)
 	ctx.ExitRule(listener)
@@ -254,3 +251,62 @@ func (p *ParseTreeWalker) ExitRule(listener ParseTreeListener, r RuleNode) {
 }
 
 var ParseTreeWalkerDefault = NewParseTreeWalker()
+
+type IterativeParseTreeWalker struct {
+	*ParseTreeWalker
+}
+
+func NewIterativeParseTreeWalker() *IterativeParseTreeWalker {
+	return new(IterativeParseTreeWalker)
+}
+
+
+func (i *IterativeParseTreeWalker) Walk(listener ParseTreeListener, t Tree) {
+	var stack []Tree
+	var indexStack []int
+	currentNode := t
+	currentIndex := 0
+
+	for currentNode != nil {
+		// pre-order visit
+		switch tt := currentNode.(type) {
+		case ErrorNode:
+			listener.VisitErrorNode(tt)
+		case TerminalNode:
+			listener.VisitTerminal(tt)
+		default:
+			i.EnterRule(listener, currentNode.(RuleNode))
+		}
+		// Move down to first child, if exists
+		if currentNode.GetChildCount() > 0 {
+			stack = append(stack, currentNode)
+			indexStack = append(indexStack, currentIndex)
+			currentIndex = 0
+			currentNode = currentNode.GetChild(0)
+			continue
+		}
+
+		for {
+			// post-order visit
+			if ruleNode, ok := currentNode.(RuleNode); ok {
+				i.ExitRule(listener, ruleNode)
+			}
+			// No parent, so no siblings
+			if len(stack) == 0 {
+				currentNode = nil
+				currentIndex = 0
+				break
+			}
+			// Move to next sibling if possible
+			currentIndex++
+			if stack[len(stack)-1].GetChildCount() > currentIndex {
+				currentNode = stack[len(stack)-1].GetChild(currentIndex)
+				break
+			}
+			// No next, sibling, so move up
+			currentNode, stack = stack[len(stack)-1], stack[:len(stack)-1]
+			currentIndex, indexStack = indexStack[len(indexStack)-1], indexStack[:len(indexStack)-1]
+		}
+	}
+
+}

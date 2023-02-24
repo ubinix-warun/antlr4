@@ -8,14 +8,7 @@ package org.antlr.v4.codegen.target;
 
 import org.antlr.v4.codegen.CodeGenerator;
 import org.antlr.v4.codegen.Target;
-import org.antlr.v4.tool.ErrorType;
-import org.stringtemplate.v4.NumberRenderer;
 import org.stringtemplate.v4.ST;
-import org.stringtemplate.v4.STErrorListener;
-import org.stringtemplate.v4.STGroup;
-import org.stringtemplate.v4.StringRenderer;
-import org.stringtemplate.v4.misc.STMessage;
-
 import java.util.*;
 
 public class CppTarget extends Target {
@@ -46,14 +39,14 @@ public class CppTarget extends Target {
 		"double", "dynamic_cast", "else", "enum", "explicit", "export",
 		"extern", "false", "float", "for", "friend", "goto", "if",
 		"inline", "int", "long", "mutable", "namespace", "new",
-		"noexcept", "not", "not_eq", "nullptr", "operator", "or",
+		"noexcept", "not", "not_eq", "nullptr", "NULL", "operator", "or",
 		"or_eq", "private", "protected", "public", "register",
 		"reinterpret_cast", "requires", "return", "short", "signed",
 		"sizeof", "static", "static_assert", "static_cast", "struct",
 		"switch", "template", "this", "thread_local", "throw", "true",
 		"try", "typedef", "typeid", "typename", "union", "unsigned",
 		"using", "virtual", "void", "volatile", "wchar_t", "while",
-		"xor", "xor_eq",
+		"xor", "xor_eq", 
 
 		"rule", "parserRule"
 	));
@@ -123,39 +116,5 @@ public class CppTarget extends Target {
 		ST extST = getTemplates().getInstanceOf(header ? "headerFileExtension" : "codeFileExtension");
 		String listenerName = gen.g.name + "BaseVisitor";
 		return listenerName+extST.render();
-	}
-
-	@Override
-	protected STGroup loadTemplates() {
-		STGroup result = super.loadTemplates();
-		result.registerRenderer(Integer.class, new NumberRenderer());
-		result.registerRenderer(String.class, new StringRenderer());
-		result.setListener(new STErrorListener() {
-			@Override
-			public void compileTimeError(STMessage msg) {
-				reportError(msg);
-			}
-
-			@Override
-			public void runTimeError(STMessage msg) {
-				reportError(msg);
-			}
-
-			@Override
-			public void IOError(STMessage msg) {
-				reportError(msg);
-			}
-
-			@Override
-			public void internalError(STMessage msg) {
-				reportError(msg);
-			}
-
-			private void reportError(STMessage msg) {
-				getCodeGenerator().tool.errMgr.toolError(ErrorType.STRING_TEMPLATE_WARNING, msg.cause, msg.toString());
-			}
-		});
-
-		return result;
 	}
 }
